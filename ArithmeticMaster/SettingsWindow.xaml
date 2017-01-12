@@ -1,0 +1,49 @@
+﻿<Window x:Class="Sansagol.ArithmeticMaster.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Sansagol.GUIControl;assembly=GUIControl"
+        Title="Настройки" SizeToContent="Height" Width="300"
+        Name="winSettings"
+        Icon="/ArithmeticMaster;component/Resources/run.png"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="3" Text="Точность"/>
+        <controls:cNumericBox Grid.Row="0" Grid.Column="1" Accuracy="0" IsReadOnly="True"
+                              HorizontalAlignment="Left" Width="100" MaxValue="10" MinValue="0"
+                              Name="nbxAccuracy" 
+                              SelectedValue="{Binding Accuracy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" Text="Тип операции"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" Margin="3"
+                  Name="cmbOperationType" IsEditable="False"
+                  SelectedItem="{Binding SelectedOperType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="3" Text="Первый операнд"/>
+        <controls:cNumericBox Grid.Row="2" Grid.Column="1" Accuracy="0" IsReadOnly="True"
+                              HorizontalAlignment="Left" Width="100" MaxValue="3" MinValue="1"
+                              Name="nbxFirstOp" 
+                              SelectedValue="{Binding FirstOperandDim, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="3" Text="Второй операнд"/>
+        <controls:cNumericBox Grid.Row="3" Grid.Column="1" Accuracy="0" IsReadOnly="True"
+                              HorizontalAlignment="Left" Width="100" MaxValue="3" MinValue="1"
+                              Name="nbxSecondOp"  
+                              SelectedValue="{Binding SecondOperandDim, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Right"
+                Content="Закрыть" Margin="3"
+                Click="bntClose_Click"/>
+    </Grid>
+</Window>

@@ -1,0 +1,108 @@
+﻿<Window x:Class="Sansagol.ArithmeticMaster.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Sansagol.ArithmeticMaster"
+       
+        Title="Арифметический тренажёр" Width="400"
+        SizeToContent="Height"
+        Loaded="Window_Loaded"
+        Icon="/ArithmeticMaster;component/Resources/calculator_32.png">
+    <Window.Resources>
+        <local:TextOutputConverter x:Key="OutConverter"/>
+        <local:BoolInverter x:Key="BoolInvert"/>
+        <local:EnableOpacityConverter x:Key="OpcConv"/>
+    </Window.Resources>
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <ToolBarTray>
+            <ToolBar>
+                <Button Name="btnSettings" ToolTip="Настройки" Click="bntSettingsClick"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolInvert}}">
+                    <Button.Content>
+                        <Image Source="/ArithmeticMaster;component/Resources/run.png" Height="21"
+                               Opacity="{Binding ElementName=btnSettings, Path=IsEnabled, 
+                                    UpdateSourceTrigger=PropertyChanged, Converter={StaticResource OpcConv}}"/>
+                    </Button.Content>
+                </Button>
+                <Separator/>
+                <Button Name="btnStart" ToolTip="Начать тренировку" Click="btnStart_Click"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolInvert}}">
+                    <Button.Content>
+                        <Image Source="/ArithmeticMaster;component/Resources/Next_32.png" Height="21"
+                               Opacity="{Binding ElementName=btnStart, Path=IsEnabled, 
+                                    UpdateSourceTrigger=PropertyChanged, Converter={StaticResource OpcConv}}"/>
+                    </Button.Content>
+                </Button>
+                <Button Name="btnStop" ToolTip="Остановить тренировку" Click="btnStop_Click"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged}">
+                    <Button.Content>
+                        <Image Source="/ArithmeticMaster;component/Resources/stop.png" Height="21"
+                               Opacity="{Binding ElementName=btnStop, Path=IsEnabled, 
+                                    UpdateSourceTrigger=PropertyChanged, Converter={StaticResource OpcConv}}"/>
+                    </Button.Content>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        
+        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Margin="3"
+                 IsReadOnly="True" FontSize="16" TextAlignment="Center"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.Text>
+                <MultiBinding  Converter="{StaticResource OutConverter}">
+                    <Binding Path="OldValue" UpdateSourceTrigger="PropertyChanged"/>
+                    <Binding Path="NewValue" UpdateSourceTrigger="PropertyChanged"/>
+                    <Binding Path="SelectedOperType" UpdateSourceTrigger="PropertyChanged"/>
+                </MultiBinding >
+            </TextBox.Text>
+        </TextBox>
+
+        <TextBox Grid.Row="2" Grid.Column="0" Margin="3"
+                 FontSize="16" TextAlignment="Center"
+                 Name="txtInput"
+                 Text="{Binding UserValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged}">
+        </TextBox>
+        <Button Grid.Row="2" Grid.Column="1" Margin="3"
+                Name="btnCalc" Click="btnCalc_Click"
+                ToolTip="Ввести результать" IsDefault="True"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged}">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/ArithmeticMaster;component/Resources/ok.png" Height="21"
+                               Opacity="{Binding ElementName=btnCalc, Path=IsEnabled, 
+                                    UpdateSourceTrigger=PropertyChanged, Converter={StaticResource OpcConv}}"/>
+                    <TextBlock Text="Подсчитать" Margin="3,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+
+        <TextBlock Grid.Row="3" Grid.ColumnSpan="2" 
+                   Text="{Binding CalcStatus.Message, UpdateSourceTrigger=PropertyChanged}"
+                   Foreground="{Binding CalcStatus.Color, UpdateSourceTrigger=PropertyChanged}"
+                   Margin="3"
+                 IsEnabled="{Binding IsRunning, UpdateSourceTrigger=PropertyChanged}"/>
+                   
+        <Button Grid.Row="4" ToolTip="Статистика по ответам" Name="btnState" 
+                Click="btnState_Click" Margin="3"
+                HorizontalAlignment="Left">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/ArithmeticMaster;component/Resources/statistics_16.png" Height="21"/>
+                    <TextBlock Text="Результаты" Margin="3,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+    </Grid>
+</Window>
